@@ -1,0 +1,42 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    # 1. Install Backend
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    
+    # 2. Install Frontend
+    - name: Install Client Dependencies
+      run: |
+        cd client
+        npm ci
+    
+    # 3. Run Backend Test (Optional - if you had them)
+    # - run: npm test
+    
+    # 4. Run Frontend Unit Tests (The one we just fixed!)
+    - name: Run Client Unit Tests
+      run: |
+        cd client
+        npm test
