@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import api from '../api';
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +21,7 @@ const LoginPage = () => {
             };
 
             // We don't need 'http://localhost:8000' because of the proxy in package.json
-            const { data } = await axios.post(
+            const { data } = await api.post(
                 '/api/users/login',
                 { email, password },
                 config

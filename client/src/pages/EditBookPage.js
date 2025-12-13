@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import api from '../api';
 
 const EditBookPage = () => {
     const [title, setTitle] = useState('');
@@ -15,7 +16,7 @@ const EditBookPage = () => {
     // Fetch current book details
     useEffect(() => {
         const fetchBook = async () => {
-            const { data } = await axios.get(`/api/books`); // Ideally we'd have a GET /:id endpoint, but filtering list works for now
+            const { data } = await api.get(`/api/books`); // Ideally we'd have a GET /:id endpoint, but filtering list works for now
             const book = data.find(b => b._id === id);
             if (book) {
                 setTitle(book.title);
@@ -36,7 +37,7 @@ const EditBookPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            await axios.put(`/api/books/${id}`, { title, author, isbn, quantity }, config);
+            await api.put(`/api/books/${id}`, { title, author, isbn, quantity }, config);
             navigate('/');
         } catch (error) {
             alert('Error updating book');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // Import Link for the Edit button
 import teamLogo from '../assets/logo.jpeg';
+import api from '../api';
 const HomePage = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,7 +12,7 @@ const HomePage = () => {
 
     const fetchBooks = async () => {
         try {
-            const { data } = await axios.get('/api/books');
+            const { data } = await api.get('/api/books');
             setBooks(data);
             setLoading(false);
         } catch (error) {
@@ -33,7 +34,7 @@ const HomePage = () => {
                         Authorization: `Bearer ${userInfo.token}`, // Send token
                     },
                 };
-                await axios.delete(`/api/books/${id}`, config);
+                await api.delete(`/api/books/${id}`, config);
                 // Refresh the list after delete
                 fetchBooks(); 
             } catch (error) {

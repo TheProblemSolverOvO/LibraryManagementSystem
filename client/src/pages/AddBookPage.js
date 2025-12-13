@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import api from '../api';
 const AddBookPage = () => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -20,7 +20,7 @@ const AddBookPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            await axios.post('/api/books', { title, author, isbn, quantity }, config);
+            await api.post('/api/books', { title, author, isbn, quantity }, config);
             navigate('/'); // Go back home
         } catch (error) {
             alert('Error adding book');
