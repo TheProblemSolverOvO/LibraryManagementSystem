@@ -17,8 +17,6 @@ const bookSchema = mongoose.Schema(
             type: String,
             required: [true, 'Please add the ISBN'],
             unique: true, // This ensures no two books have the same ISBN
-            maxlength: 13,
-            minlength: 10
         },
         publishedDate: {
             type: Date,
