@@ -13,37 +13,34 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v3
     
-    # 1. Install Backend
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
     - run: npm ci
     
-    # 2. Install Frontend
     - name: Install Client Dependencies
       run: |
         cd client
         npm ci
     
-    # - run: npm test
-    
-    # 4. Run Frontend Unit Tests 
     - name: Run Client Unit Tests
       run: |
         cd client
-        npm test
+        # Added --watchAll=false so it doesn't hang forever!
+        npm test -- --watchAll=false
+
+  # 2. The Deploy Job
   deploy:
-      needs: build-and-test  
-      runs-on: ubuntu-latest
-      steps:
-        - name: Trigger Render Deployment
-         
-          run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
-      
+    needs: build  # 
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # Safety: Only deploy if pushing to main (not PRs)
+    steps:
+      - name: Trigger Render Deployment
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
