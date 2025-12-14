@@ -48,7 +48,15 @@ const HomePage = () => {
             <div style={styles.header}>
                 <img src={teamLogo} alt="Team Logo" style={styles.logo} />
                 <h1>Library Catalog</h1>
-                <p>Browse our collection.</p>
+                <div style={styles.welcomeSection}>
+                    <h3>Welcome to the Group 15 Digital Library!</h3>
+                    <p>
+                        This application serves as a comprehensive management system for our vast collection 
+                        of technical resources. Whether you are looking for advanced algorithms or 
+                        beginner guides, our catalog is updated in real-time. 
+                        <strong> Sign in to contribute to our collection!</strong>
+                    </p>
+                </div>
                 {/* Show Add Button only if logged in */}
                 {userInfo && (
                     <Link to="/add-book" style={styles.addButton}>+ Add New Book</Link>
