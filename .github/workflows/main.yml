@@ -32,11 +32,18 @@ jobs:
         cd client
         npm ci
     
-    # 3. Run Backend Test (Optional - if you had them)
     # - run: npm test
     
-    # 4. Run Frontend Unit Tests (The one we just fixed!)
+    # 4. Run Frontend Unit Tests 
     - name: Run Client Unit Tests
       run: |
         cd client
         npm test
+  deploy:
+      needs: build-and-test  
+      runs-on: ubuntu-latest
+      steps:
+        - name: Trigger Render Deployment
+         
+          run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      
